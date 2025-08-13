@@ -1,0 +1,934 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gesabatina - Gestão Escola Sabatina</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#3b82f6',
+                        accent: '#10b981',
+                        dark: '#1f2937'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiR2VzYWJhdGluYSIsInNob3J0X25hbWUiOiJHZXNhYmF0aW5hIiwic3RhcnRfdXJsIjoiLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMxZTQwYWYiLCJ0aGVtZV9jb2xvciI6IiMxZTQwYWYifQ==">
+    <meta name="theme-color" content="#1e40af">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        }
+        
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/694c95aa-f134-4148-8247-95ec97a012e6.png" alt="Logo da igreja adventista com cruz estilizada e livro aberto representando educação cristã" class="w-8 h-8 rounded-full">
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold">Gesabatina</h1>
+                        <p class="text-xs opacity-90">Gestão Escola Sabatina</p>
+                    </div>
+                </div>
+                <button id="menuBtn" class="p-2 rounded-lg hover:bg-white hover:bg-opacity-20 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav id="mobileMenu" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden">
+        <div class="glass-effect w-80 h-full ml-auto p-6 slide-in">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-xl font-semibold text-gray-800">Menu</h2>
+                <button id="closeMenu" class="p-2 hover:bg-gray-200 rounded-lg">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <ul class="space-y-4">
+                <li><a href="#" onclick="showSection('dashboard')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
+                    </svg>
+                    <span>Dashboard</span>
+                </a></li>
+                <li><a href="#" onclick="showSection('students')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span>Alunos</span>
+                </a></li>
+                <li><a href="#" onclick="showSection('attendance')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Presença</span>
+                </a></li>
+                <li><a href="#" onclick="showSection('reports')" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors">
+                    <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
+                    </svg>
+                    <span>Relatórios</span>
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="fade-in">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Dashboard</h2>
+                <p class="text-gray-600">Resumo das atividades da escola sabatina</p>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="stats-card rounded-xl p-6 card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Total de Alunos</p>
+                            <p id="totalStudents" class="text-2xl font-bold text-primary">0</p>
+                        </div>
+                        <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-card rounded-xl p-6 card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Presentes Hoje</p>
+                            <p id="presentToday" class="text-2xl font-bold text-accent">0</p>
+                        </div>
+                        <div class="w-12 h-12 bg-accent bg-opacity-10 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-card rounded-xl p-6 card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Taxa de Presença</p>
+                            <p id="attendanceRate" class="text-2xl font-bold text-yellow-600">0%</p>
+                        </div>
+                        <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-card rounded-xl p-6 card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Sábados este Mês</p>
+                            <p id="saturdays" class="text-2xl font-bold text-purple-600">4</p>
+                        </div>
+                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Ações Rápidas</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <button onclick="showSection('attendance')" class="flex items-center space-x-3 p-4 bg-gradient-to-r from-primary to-secondary text-white rounded-lg hover:shadow-lg transition-all">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Marcar Presença</span>
+                    </button>
+                    
+                    <button onclick="showSection('students')" class="flex items-center space-x-3 p-4 bg-gradient-to-r from-accent to-green-500 text-white rounded-lg hover:shadow-lg transition-all">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6z"></path>
+                        </svg>
+                        <span>Gerenciar Alunos</span>
+                    </button>
+                    
+                    <button onclick="showSection('reports')" class="flex items-center space-x-3 p-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:shadow-lg transition-all">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"></path>
+                        </svg>
+                        <span>Ver Relatórios</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Atividade Recente</h3>
+                <div id="recentActivity" class="space-y-3">
+                    <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-sm font-medium text-gray-800">Sistema iniciado</p>
+                            <p class="text-xs text-gray-500">Bem-vindo ao Gesabatina!</p>
+                        </div>
+                        <span class="text-xs text-gray-400">agora</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Students Section -->
+        <section id="students" class="hidden fade-in">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Gerenciar Alunos</h2>
+                    <p class="text-gray-600">Cadastre e gerencie os alunos da escola sabatina</p>
+                </div>
+                <button onclick="showModal('addStudentModal')" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>Novo Aluno</span>
+                </button>
+            </div>
+
+            <!-- Students List -->
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="p-4 border-b border-gray-200">
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-1">
+                            <input type="text" id="searchStudents" placeholder="Buscar alunos..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+                        <select id="classFilter" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <option value="">Todas as Classes</option>
+                            <option value="Primários">Primários</option>
+                            <option value="Juniors">Juniors</option>
+                            <option value="Adolescentes">Adolescentes</option>
+                            <option value="Jovens">Jovens</option>
+                            <option value="Adultos">Adultos</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="studentsList" class="divide-y divide-gray-200">
+                    <div class="p-8 text-center text-gray-500">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/41b056dd-c33e-43ae-bcc9-b47dfb56fe8b.png" alt="Ilustração de uma sala de aula vazia com carteiras organizadas e um quadro ao fundo, representando o início das atividades escolares" class="mx-auto mb-4 opacity-50">
+                        <p>Nenhum aluno cadastrado ainda.</p>
+                        <p class="text-sm">Clique em "Novo Aluno" para começar.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Attendance Section -->
+        <section id="attendance" class="hidden fade-in">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Controle de Presença</h2>
+                <p class="text-gray-600">Marque a presença dos alunos para hoje</p>
+            </div>
+
+            <!-- Date Selector -->
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                <div class="flex items-center space-x-4">
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Data da Aula</label>
+                        <input type="date" id="attendanceDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Classe</label>
+                        <select id="attendanceClass" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <option value="">Selecione uma classe</option>
+                            <option value="Primários">Primários</option>
+                            <option value="Juniors">Juniors</option>
+                            <option value="Adolescentes">Adolescentes</option>
+                            <option value="Jovens">Jovens</option>
+                            <option value="Adultos">Adultos</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance List -->
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <div class="p-4 border-b border-gray-200">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-800">Lista de Presença</h3>
+                        <div class="flex space-x-2">
+                            <button onclick="markAllPresent()" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm">
+                                Marcar Todos
+                            </button>
+                            <button onclick="clearAllAttendance()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors text-sm">
+                                Limpar Todos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="attendanceList" class="divide-y divide-gray-200">
+                    <div class="p-8 text-center text-gray-500">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/7c6add64-a46c-4266-a5e0-cb9ac4989d6d.png" alt="Ilustração de uma lista de chamada com nomes e caixas de seleção, representando o controle de presença escolar" class="mx-auto mb-4 opacity-50">
+                        <p>Selecione uma classe para ver a lista de alunos.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Save Attendance Button -->
+            <div class="mt-6 text-center">
+                <button onclick="saveAttendance()" class="bg-primary text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+                    Salvar Presença
+                </button>
+            </div>
+        </section>
+
+        <!-- Reports Section -->
+        <section id="reports" class="hidden fade-in">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Relatórios</h2>
+                <p class="text-gray-600">Gere relatórios detalhados de frequência e desempenho</p>
+            </div>
+
+            <!-- Report Filters -->
+            <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Relatório</label>
+                        <select id="reportType" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <option value="weekly">Semanal</option>
+                            <option value="monthly">Mensal</option>
+                            <option value="quarterly">Trimestral</option>
+                            <option value="semester">Semestral</option>
+                            <option value="annual">Anual</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Classe</label>
+                        <select id="reportClass" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <option value="">Todas as Classes</option>
+                            <option value="Primários">Primários</option>
+                            <option value="Juniors">Juniors</option>
+                            <option value="Adolescentes">Adolescentes</option>
+                            <option value="Jovens">Jovens</option>
+                            <option value="Adultos">Adultos</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Data Início</label>
+                        <input type="date" id="reportStartDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Data Fim</label>
+                        <input type="date" id="reportEndDate" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                    </div>
+                </div>
+                <div class="mt-4 flex space-x-4">
+                    <button onclick="generateReport()" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        Gerar Relatório
+                    </button>
+                    <button onclick="exportReport()" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                        Exportar PDF
+                    </button>
+                </div>
+            </div>
+
+            <!-- Report Content -->
+            <div id="reportContent" class="bg-white rounded-xl shadow-sm p-6">
+                <div class="text-center text-gray-500 py-12">
+                    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/a90ee0bf-f486-43ed-bcd3-7bdad03d7ab2.png" alt="Ilustração de gráficos e relatórios com dados estatísticos sobre frequência escolar e desempenho dos alunos" class="mx-auto mb-4 opacity-50">
+                    <p>Clique em "Gerar Relatório" para visualizar os dados.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Add Student Modal -->
+    <div id="addStudentModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-md">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-800">Novo Aluno</h3>
+                    <button onclick="hideModal('addStudentModal')" class="p-2 hover:bg-gray-100 rounded-lg">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <form id="addStudentForm" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
+                    <input type="text" id="studentName" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Idade</label>
+                    <input type="number" id="studentAge" required min="1" max="100" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Classe</label>
+                    <select id="studentClass" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <option value="">Selecione uma classe</option>
+                        <option value="Primários">Primários</option>
+                        <option value="Juniors">Juniors</option>
+                        <option value="Adolescentes">Adolescentes</option>
+                        <option value="Jovens">Jovens</option>
+                        <option value="Adultos">Adultos</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Telefone dos Responsáveis</label>
+                    <input type="tel" id="studentPhone" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                </div>
+                <div class="flex space-x-4 pt-4">
+                    <button type="button" onclick="hideModal('addStudentModal')" class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        Salvar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Toast -->
+    <div id="successToast" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+        <div class="flex items-center space-x-2">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+            </svg>
+            <span id="toastMessage">Sucesso!</span>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let students = JSON.parse(localStorage.getItem('students') || '[]');
+        let attendance = JSON.parse(localStorage.getItem('attendance') || '{}');
+        let currentSection = 'dashboard';
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            updateDashboard();
+            setTodayDate();
+            loadStudents();
+        });
+
+        function setupEventListeners() {
+            // Menu handlers
+            document.getElementById('menuBtn').addEventListener('click', () => {
+                document.getElementById('mobileMenu').classList.remove('hidden');
+            });
+
+            document.getElementById('closeMenu').addEventListener('click', () => {
+                document.getElementById('mobileMenu').classList.add('hidden');
+            });
+
+            // Modal click outside to close
+            document.getElementById('mobileMenu').addEventListener('click', (e) => {
+                if (e.target.id === 'mobileMenu') {
+                    document.getElementById('mobileMenu').classList.add('hidden');
+                }
+            });
+
+            // Form handlers
+            document.getElementById('addStudentForm').addEventListener('submit', addStudent);
+            
+            // Search and filter handlers
+            document.getElementById('searchStudents').addEventListener('input', filterStudents);
+            document.getElementById('classFilter').addEventListener('change', filterStudents);
+            document.getElementById('attendanceClass').addEventListener('change', loadAttendanceList);
+            document.getElementById('attendanceDate').addEventListener('change', loadAttendanceList);
+        }
+
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('main > section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionName).classList.remove('hidden');
+            currentSection = sectionName;
+            
+            // Close mobile menu
+            document.getElementById('mobileMenu').classList.add('hidden');
+            
+            // Load section specific data
+            if (sectionName === 'students') {
+                loadStudents();
+            } else if (sectionName === 'dashboard') {
+                updateDashboard();
+            }
+        }
+
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+            if (modalId === 'addStudentModal') {
+                document.getElementById('addStudentForm').reset();
+            }
+        }
+
+        function addStudent(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('studentName').value;
+            const age = document.getElementById('studentAge').value;
+            const studentClass = document.getElementById('studentClass').value;
+            const phone = document.getElementById('studentPhone').value;
+            
+            const student = {
+                id: Date.now(),
+                name,
+                age: parseInt(age),
+                class: studentClass,
+                phone,
+                createdAt: new Date().toISOString()
+            };
+            
+            students.push(student);
+            localStorage.setItem('students', JSON.stringify(students));
+            
+            hideModal('addStudentModal');
+            loadStudents();
+            updateDashboard();
+            showToast('Aluno adicionado com sucesso!');
+            
+            // Add to recent activity
+            addRecentActivity(`Novo aluno cadastrado: ${name}`, 'success');
+        }
+
+        function loadStudents() {
+            const container = document.getElementById('studentsList');
+            
+            if (students.length === 0) {
+                container.innerHTML = `
+                    <div class="p-8 text-center text-gray-500">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4601aa94-b888-4dda-9bc3-b23bb67c2f9b.png" alt="Ilustração de uma sala de aula vazia com carteiras organizadas e um quadro ao fundo, representando o início das atividades escolares" class="mx-auto mb-4 opacity-50">
+                        <p>Nenhum aluno cadastrado ainda.</p>
+                        <p class="text-sm">Clique em "Novo Aluno" para começar.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let filteredStudents = [...students];
+            const searchTerm = document.getElementById('searchStudents').value.toLowerCase();
+            const classFilter = document.getElementById('classFilter').value;
+
+            if (searchTerm) {
+                filteredStudents = filteredStudents.filter(student =>
+                    student.name.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            if (classFilter) {
+                filteredStudents = filteredStudents.filter(student =>
+                    student.class === classFilter
+                );
+            }
+
+            container.innerHTML = filteredStudents.map(student => `
+                <div class="p-4 hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-full flex items-center justify-center">
+                                <span class="text-primary font-semibold">${student.name.charAt(0).toUpperCase()}</span>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">${student.name}</h4>
+                                <p class="text-sm text-gray-600">${student.class} • ${student.age} anos</p>
+                                ${student.phone ? `<p class="text-xs text-gray-500">${student.phone}</p>` : ''}
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="editStudent(${student.id})" class="p-2 text-gray-400 hover:text-primary transition-colors">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
+                                </svg>
+                            </button>
+                            <button onclick="deleteStudent(${student.id})" class="p-2 text-gray-400 hover:text-red-500 transition-colors">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterStudents() {
+            loadStudents();
+        }
+
+        function deleteStudent(id) {
+            if (confirm('Tem certeza que deseja excluir este aluno?')) {
+                students = students.filter(student => student.id !== id);
+                localStorage.setItem('students', JSON.stringify(students));
+                loadStudents();
+                updateDashboard();
+                showToast('Aluno removido com sucesso!');
+            }
+        }
+
+        function editStudent(id) {
+            // Implementation for editing student
+            showToast('Funcionalidade de edição em desenvolvimento!');
+        }
+
+        function setTodayDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('attendanceDate').value = today;
+        }
+
+        function loadAttendanceList() {
+            const selectedClass = document.getElementById('attendanceClass').value;
+            const selectedDate = document.getElementById('attendanceDate').value;
+            const container = document.getElementById('attendanceList');
+
+            if (!selectedClass) {
+                container.innerHTML = `
+                    <div class="p-8 text-center text-gray-500">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/61eb815f-c094-4440-a69e-8835dca62839.png" alt="Ilustração de uma lista de chamada com nomes e caixas de seleção, representando o controle de presença escolar" class="mx-auto mb-4 opacity-50">
+                        <p>Selecione uma classe para ver a lista de alunos.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const classStudents = students.filter(student => student.class === selectedClass);
+            
+            if (classStudents.length === 0) {
+                container.innerHTML = `
+                    <div class="p-8 text-center text-gray-500">
+                        <p>Nenhum aluno encontrado nesta classe.</p>
+                        <p class="text-sm">Adicione alunos primeiro na seção "Alunos".</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const attendanceKey = `${selectedDate}_${selectedClass}`;
+            const existingAttendance = attendance[attendanceKey] || {};
+
+            container.innerHTML = classStudents.map(student => `
+                <div class="p-4 flex items-center justify-between hover:bg-gray-50">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 bg-primary bg-opacity-10 rounded-full flex items-center justify-center">
+                            <span class="text-primary font-semibold text-sm">${student.name.charAt(0).toUpperCase()}</span>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-gray-800">${student.name}</h4>
+                            <p class="text-sm text-gray-600">${student.age} anos</p>
+                        </div>
+                    </div>
+                    <label class="flex items-center space-x-3 cursor-pointer">
+                        <span class="text-sm text-gray-600">Presente</span>
+                        <input type="checkbox" 
+                               class="w-5 h-5 text-primary rounded focus:ring-primary attendance-checkbox" 
+                               data-student-id="${student.id}"
+                               ${existingAttendance[student.id] ? 'checked' : ''}>
+                    </label>
+                </div>
+            `).join('');
+        }
+
+        function markAllPresent() {
+            document.querySelectorAll('.attendance-checkbox').forEach(checkbox => {
+                checkbox.checked = true;
+            });
+        }
+
+        function clearAllAttendance() {
+            document.querySelectorAll('.attendance-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        }
+
+        function saveAttendance() {
+            const selectedClass = document.getElementById('attendanceClass').value;
+            const selectedDate = document.getElementById('attendanceDate').value;
+            
+            if (!selectedClass || !selectedDate) {
+                alert('Selecione uma classe e data primeiro!');
+                return;
+            }
+
+            const attendanceKey = `${selectedDate}_${selectedClass}`;
+            const attendanceData = {};
+            
+            document.querySelectorAll('.attendance-checkbox').forEach(checkbox => {
+                const studentId = checkbox.dataset.studentId;
+                attendanceData[studentId] = checkbox.checked;
+            });
+
+            attendance[attendanceKey] = attendanceData;
+            localStorage.setItem('attendance', JSON.stringify(attendance));
+            
+            showToast('Presença salva com sucesso!');
+            updateDashboard();
+            
+            // Add to recent activity
+            const presentCount = Object.values(attendanceData).filter(Boolean).length;
+            addRecentActivity(`Presença registrada: ${presentCount} alunos presentes (${selectedClass})`, 'success');
+        }
+
+        function generateReport() {
+            const reportType = document.getElementById('reportType').value;
+            const reportClass = document.getElementById('reportClass').value;
+            const startDate = document.getElementById('reportStartDate').value;
+            const endDate = document.getElementById('reportEndDate').value;
+            
+            const container = document.getElementById('reportContent');
+            
+            // Generate mock report data
+            const reportData = generateReportData(reportType, reportClass, startDate, endDate);
+            
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <div class="border-b pb-4">
+                        <h3 class="text-xl font-bold text-gray-800">Relatório ${getReportTypeName(reportType)}</h3>
+                        <p class="text-gray-600">${reportClass || 'Todas as Classes'} • ${startDate || 'Início'} até ${endDate || 'Hoje'}</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="stats-card rounded-lg p-4">
+                            <h4 class="text-sm font-medium text-gray-600">Total de Aulas</h4>
+                            <p class="text-2xl font-bold text-primary">${reportData.totalClasses}</p>
+                        </div>
+                        <div class="stats-card rounded-lg p-4">
+                            <h4 class="text-sm font-medium text-gray-600">Média de Presença</h4>
+                            <p class="text-2xl font-bold text-accent">${reportData.averageAttendance}%</p>
+                        </div>
+                        <div class="stats-card rounded-lg p-4">
+                            <h4 class="text-sm font-medium text-gray-600">Alunos Ativos</h4>
+                            <p class="text-2xl font-bold text-yellow-600">${reportData.activeStudents}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-3">Detalhes por Aluno</h4>
+                        <div class="space-y-2">
+                            ${reportData.studentDetails.map(student => `
+                                <div class="flex justify-between items-center bg-white p-3 rounded">
+                                    <span class="font-medium">${student.name}</span>
+                                    <div class="flex items-center space-x-4">
+                                        <span class="text-sm text-gray-600">${student.attendances}/${reportData.totalClasses} aulas</span>
+                                        <span class="text-sm font-semibold ${student.percentage >= 75 ? 'text-green-600' : student.percentage >= 50 ? 'text-yellow-600' : 'text-red-600'}">${student.percentage}%</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateReportData(type, className, startDate, endDate) {
+            const filteredStudents = className ? students.filter(s => s.class === className) : students;
+            const totalClasses = type === 'weekly' ? 1 : type === 'monthly' ? 4 : type === 'quarterly' ? 13 : type === 'semester' ? 26 : 52;
+            
+            return {
+                totalClasses,
+                averageAttendance: Math.floor(Math.random() * 30) + 70,
+                activeStudents: filteredStudents.length,
+                studentDetails: filteredStudents.map(student => {
+                    const attendances = Math.floor(Math.random() * totalClasses) + Math.floor(totalClasses * 0.5);
+                    return {
+                        name: student.name,
+                        attendances: Math.min(attendances, totalClasses),
+                        percentage: Math.floor((Math.min(attendances, totalClasses) / totalClasses) * 100)
+                    };
+                })
+            };
+        }
+
+        function getReportTypeName(type) {
+            const names = {
+                weekly: 'Semanal',
+                monthly: 'Mensal',
+                quarterly: 'Trimestral',
+                semester: 'Semestral',
+                annual: 'Anual'
+            };
+            return names[type] || 'Personalizado';
+        }
+
+        function exportReport() {
+            showToast('Exportação para PDF em desenvolvimento!');
+        }
+
+        function updateDashboard() {
+            // Update stats
+            document.getElementById('totalStudents').textContent = students.length;
+            
+            // Calculate today's attendance
+            const today = new Date().toISOString().split('T')[0];
+            const todayAttendance = Object.keys(attendance)
+                .filter(key => key.startsWith(today))
+                .reduce((total, key) => {
+                    return total + Object.values(attendance[key]).filter(Boolean).length;
+                }, 0);
+            
+            document.getElementById('presentToday').textContent = todayAttendance;
+            
+            // Calculate attendance rate
+            const totalAttendanceRecords = Object.values(attendance).reduce((total, record) => {
+                return total + Object.keys(record).length;
+            }, 0);
+            
+            const totalPresentRecords = Object.values(attendance).reduce((total, record) => {
+                return total + Object.values(record).filter(Boolean).length;
+            }, 0);
+            
+            const attendanceRate = totalAttendanceRecords > 0 
+                ? Math.round((totalPresentRecords / totalAttendanceRecords) * 100)
+                : 0;
+            
+            document.getElementById('attendanceRate').textContent = attendanceRate + '%';
+        }
+
+        function addRecentActivity(message, type = 'info') {
+            const container = document.getElementById('recentActivity');
+            const time = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            
+            const activityItem = document.createElement('div');
+            activityItem.className = 'flex items-center space-x-3 p-3 bg-gray-50 rounded-lg';
+            
+            const iconColor = type === 'success' ? 'green' : type === 'warning' ? 'yellow' : 'blue';
+            const icon = type === 'success' 
+                ? '<path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>'
+                : '<path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>';
+            
+            activityItem.innerHTML = `
+                <div class="w-8 h-8 bg-${iconColor}-100 rounded-full flex items-center justify-center">
+                    <svg class="w-4 h-4 text-${iconColor}-600" fill="currentColor" viewBox="0 0 20 20">
+                        ${icon}
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-800">${message}</p>
+                </div>
+                <span class="text-xs text-gray-400">${time}</span>
+            `;
+            
+            container.insertBefore(activityItem, container.firstChild);
+            
+            // Keep only last 5 activities
+            while (container.children.length > 5) {
+                container.removeChild(container.lastChild);
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('successToast');
+            const messageElement = document.getElementById('toastMessage');
+            
+            messageElement.textContent = message;
+            toast.classList.remove('translate-x-full');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+            }, 3000);
+        }
+
+        // Service Worker Registration for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZXZlbnQgPT4gewogIGV2ZW50LndhaXRVbnRpbChzZWxmLnNraXBXYWl0aW5nKCkpOwp9KTsKCnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignYWN0aXZhdGUnLCBldmVudCA9PiB7CiAgZXZlbnQud2FpdFVudGlsKHNlbGYuY2xpZW50cy5jbGFpbSgpKTsKfSk7')
+                .then(registration => {
+                    console.log('SW registered: ', registration);
+                })
+                .catch(registrationError => {
+                    console.log('SW registration failed: ', registrationError);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
+
